@@ -162,7 +162,7 @@ Use OpenRouter for flexible model access:
 
 ## Implementation Plan (TDD Approach)
 
-**Current Step**: Phase 2, Step 2.1 ⏳
+**Current Step**: Phase 2, Step 2.2 ⏳
 
 ### Phase 1: Project Foundation & Observability Infrastructure ✅ COMPLETE
 
@@ -195,13 +195,15 @@ Use OpenRouter for flexible model access:
 
 ### Phase 2: Core Components with Observability
 
-**Step 2.1: Core Schema**
-- [ ] Write tests for: State model validation (Pydantic)
-- [ ] Write tests for: Message models (user, assistant, tool)
-- [ ] Write tests for: Agent role enums and status types
-- [ ] Write tests for: Conversation thread models
-- [ ] Implement: `core/schema.py` with all data models
-- [ ] Verify: Schema validation works with edge cases
+**Step 2.1: Core Schema** ✅ COMPLETE
+- [x] Write tests for: Message models (5 tests)
+- [x] Write tests for: Agent role enums and status (4 tests)
+- [x] Write tests for: Conversation thread models (3 tests)
+- [x] Write tests for: State models (3 tests)
+- [x] Write tests for: Model validation edge cases (4 tests)
+- [x] Implement: `core/schema.py` with all data models
+- [x] All 19 schema tests passing
+- [x] Pydantic v1 compatible (using dict() method)
 
 **Step 2.2: Brain (LLM Caller)**
 - [ ] Write tests for: Basic LLM call via OpenRouter
