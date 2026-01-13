@@ -13,13 +13,15 @@ class TestLangfuseClientInitialization:
 
     def test_init_langfuse_client_with_env_vars(self):
         """Test that Langfuse client initializes with environment variables."""
+        from core import observability
+
         with patch.dict(os.environ, {
             'LANGFUSE_PUBLIC_KEY': 'pk-lf-test-key',
             'LANGFUSE_SECRET_KEY': 'sk-lf-test-secret',
             'LANGFUSE_HOST': 'https://cloud.langfuse.com'
         }):
-            with patch('langfuse.Langfuse') as mock_langfuse:
-                from core import observability
+            # Patch where it's used in the module
+            with patch('core.observability.Langfuse') as mock_langfuse:
                 # Reset module global state
                 observability._langfuse_client = None
 

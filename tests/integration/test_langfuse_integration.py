@@ -75,37 +75,26 @@ class TestLangfuseCloudIntegration:
         print(f"   Look for trace: {trace_name}")
 
     def test_create_trace_with_generation(self):
-        """Test creating a trace with a generation span (simulating LLM call)."""
+        """Test creating a generation (simulating LLM call) with new API."""
         from core import observability
 
         # Reset client
         observability._langfuse_client = None
 
-        # Create a trace
-        trace_name = f"llm_test_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        trace = observability.create_trace(
-            name=trace_name,
-            metadata={"test": "llm_generation"}
-        )
-
-        assert trace is not None
-        print(f"\n✓ Created trace: {trace_name}")
-
-        # Create a generation span (simulating an LLM call)
-        generation = observability.create_generation_span(
-            trace=trace,
-            name="test_llm_call",
+        # Create a generation directly (new API doesn't use trace parameter)
+        generation_name = f"llm_test_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        generation = observability.create_generation(
+            name=generation_name,
             model="anthropic/claude-3.5-sonnet",
             input_data={
                 "prompt": "Hello, this is a test prompt",
-                "temperature": 0.7,
-                "max_tokens": 100
             },
-            metadata={"test": "integration"}
+            metadata={"test": "integration"},
+            model_parameters={"temperature": 0.7, "max_tokens": 100}
         )
 
         assert generation is not None
-        print("✓ Created generation span")
+        print(f"\n✓ Created generation: {generation_name}")
 
         # Update the generation with mock output
         observability.update_generation(
@@ -122,6 +111,10 @@ class TestLangfuseCloudIntegration:
 
         print("✓ Updated generation with output and usage")
 
+        # End the generation
+        observability.end_generation(generation)
+        print("✓ Ended generation")
+
         # Flush to ensure everything is sent
         observability.flush_traces()
         print("✓ Flushed traces to Langfuse Cloud")
@@ -130,8 +123,8 @@ class TestLangfuseCloudIntegration:
         time.sleep(2)
 
         print(f"\n📊 Check your Langfuse dashboard at https://cloud.langfuse.com")
-        print(f"   Look for trace: {trace_name}")
-        print(f"   It should contain a generation span with token usage")
+        print(f"   Look for generation: {generation_name}")
+        print(f"   It should contain token usage and model parameters")
 
     def test_observe_decorator_with_real_api(self):
         """Test the @observe decorator with real Langfuse API."""
@@ -183,30 +176,22 @@ def test_manual_langfuse_verification():
         print("   Check your API keys in .env file")
         return
 
-    print("\n2. Creating a test trace...")
-    trace_name = f"manual_verification_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    trace = observability.create_trace(
-        name=trace_name,
-        user_id="integration_test_user",
-        metadata={
-            "purpose": "manual_verification",
-            "timestamp": datetime.now().isoformat()
-        },
-        tags=["manual-test", "verification"]
-    )
-    print(f"   ✓ Created trace: {trace_name}")
-
-    print("\n3. Creating a generation span...")
-    generation = observability.create_generation_span(
-        trace=trace,
-        name="verification_generation",
+    print("\n2. Creating a generation with new API...")
+    generation_name = f"manual_verification_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    generation = observability.create_generation(
+        name=generation_name,
         model="anthropic/claude-3.5-sonnet",
         input_data={"prompt": "Verify Langfuse integration"},
-        metadata={"test": "manual_verification"}
+        metadata={
+            "purpose": "manual_verification",
+            "test": "manual_verification",
+            "user_id": "integration_test_user"
+        },
+        model_parameters={"temperature": 0.7}
     )
-    print("   ✓ Created generation span")
+    print(f"   ✓ Created generation: {generation_name}")
 
-    print("\n4. Updating generation with output...")
+    print("\n3. Updating generation with output...")
     observability.update_generation(
         generation=generation,
         output_data={"response": "Langfuse integration verified!"},
@@ -218,6 +203,10 @@ def test_manual_langfuse_verification():
     )
     print("   ✓ Updated generation with token usage")
 
+    print("\n4. Ending generation...")
+    observability.end_generation(generation)
+    print("   ✓ Generation ended")
+
     print("\n5. Flushing traces to Langfuse Cloud...")
     observability.flush_traces()
     print("   ✓ Traces flushed")
@@ -228,10 +217,10 @@ def test_manual_langfuse_verification():
     print(f"\n📊 Now check your Langfuse dashboard:")
     print(f"   URL: https://cloud.langfuse.com")
     print(f"\n🔍 Look for:")
-    print(f"   • Trace name: {trace_name}")
-    print(f"   • User ID: integration_test_user")
-    print(f"   • Generation span with token usage (10 prompt + 5 completion)")
-    print(f"   • Tags: manual-test, verification")
+    print(f"   • Generation name: {generation_name}")
+    print(f"   • Model: anthropic/claude-3.5-sonnet")
+    print(f"   • Token usage: 10 prompt + 5 completion = 15 total")
+    print(f"   • Input/output data with verification message")
     print("\n" + "="*70 + "\n")
 
 
