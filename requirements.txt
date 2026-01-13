@@ -1,0 +1,38 @@
+# Core dependencies for framework-agnostic AI agent system
+# Compatible with Termux (no Docker required)
+
+# LLM Integration
+openai>=1.12.0                    # OpenAI SDK for OpenRouter API calls
+
+# Observability
+langfuse>=2.0.0                   # Langfuse Cloud integration for tracing
+opentelemetry-api>=1.22.0         # OpenTelemetry API for instrumentation
+opentelemetry-sdk>=1.22.0         # OpenTelemetry SDK
+
+# Data Validation & Models
+pydantic>=2.5.0                   # Data validation and settings management
+pydantic-settings>=2.1.0          # Environment variable management
+
+# Database
+sqlalchemy>=2.0.0                 # SQLAlchemy ORM for SQLite
+
+# Testing
+pytest>=7.4.0                     # Testing framework
+pytest-cov>=4.1.0                 # Coverage reporting
+pytest-asyncio>=0.21.0            # Async test support
+pytest-mock>=3.12.0               # Mocking utilities
+
+# Development Tools (optional - some may require compilation)
+# black>=23.12.0                  # Code formatting (install if needed)
+# ruff>=0.1.9                     # Fast Python linter (requires Rust, skip in Termux)
+# mypy>=1.8.0                     # Static type checking (install if needed)
+
+# Utilities
+python-dotenv>=1.0.0              # .env file support
+httpx>=0.26.0                     # HTTP client for web search tools
+tenacity>=8.2.3                   # Retry logic for API calls
+
+# Orchestration Frameworks (optional, install as needed)
+# langgraph>=0.0.20               # Uncomment to use LangGraph adapter
+# crewai>=0.1.0                   # Uncomment to use CrewAI adapter
+# semantic-kernel>=0.4.0          # Uncomment to use MS Agent Framework
