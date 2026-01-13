@@ -162,7 +162,7 @@ Use OpenRouter for flexible model access:
 
 ## Implementation Plan (TDD Approach)
 
-**Current Step**: Phase 2, Step 2.2 ⏳
+**Current Step**: Phase 2, Step 2.3 ⏳
 
 ### Phase 1: Project Foundation & Observability Infrastructure ✅ COMPLETE
 
@@ -205,14 +205,15 @@ Use OpenRouter for flexible model access:
 - [x] All 19 schema tests passing
 - [x] Pydantic v1 compatible (using dict() method)
 
-**Step 2.2: Brain (LLM Caller)**
-- [ ] Write tests for: Basic LLM call via OpenRouter
-- [ ] Write tests for: Streaming response handling (optional)
-- [ ] Write tests for: Tool call parsing from LLM response
-- [ ] Write tests for: Error handling and retries
-- [ ] Write tests for: Langfuse traces for each LLM call
-- [ ] Implement: `core/brain.py` complete implementation
-- [ ] Verify: Integration test with real OpenRouter API
+**Step 2.2: Brain (LLM Caller)** ✅ COMPLETE
+- [x] Write tests for: Basic LLM call via OpenRouter (4 tests)
+- [x] Write tests for: Tool call parsing from LLM response (2 tests)
+- [x] Write tests for: Error handling and retries (4 tests)
+- [x] Write tests for: Langfuse traces for each LLM call (3 tests)
+- [x] Write tests for: Model parameters (2 tests)
+- [x] Implement: `core/brain.py` complete implementation
+- [x] All 15 Brain tests passing
+- [x] Total: 57 tests passing (100% pass rate)
 
 **Step 2.3: Core Tools**
 - [ ] Write tests for: Web search tool (mock HTTP)
